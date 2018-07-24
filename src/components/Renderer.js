@@ -6,7 +6,20 @@ import TextInput from "./input";
 function model(htmlInputValue$, jsInputValue$, cssInputValue$) {
   return xs
     .combine(htmlInputValue$, jsInputValue$, cssInputValue$)
-    .map(([html, js, css]) => ({ html, js, css }));
+    .map(
+      ([html, js, css]) => `
+      <html>
+        <head>
+          <style>${css}</style>
+        </head>
+        <body>
+         ${html}
+          <script>${js}</script>
+        </body>
+      </html>
+    `
+    )
+    .startWith("");
 }
 
 function view(values$, htmlInputDOM$, jsInputDOM$, cssInputDOM$) {
@@ -19,17 +32,7 @@ function view(values$, htmlInputDOM$, jsInputDOM$, cssInputDOM$) {
         cssInputVTree,
         iframe({
           attrs: {
-            srcdoc: `
-              <html>
-                <head>
-                  <style>${values.css}</style>
-                </head>
-                <body>
-                ${values.html}
-                  <script>${values.js}</script>
-                </body>
-              </html>          
-          `,
+            srcdoc: values,
             sandbox: "allow-scripts"
           }
         })
@@ -38,20 +41,21 @@ function view(values$, htmlInputDOM$, jsInputDOM$, cssInputDOM$) {
 }
 
 function Renderer(sources) {
-  const htmlInputProps = xs.of({ label: "HTML" });
+  const htmlInputProps = xs.of({ label: "HTML: " });
   const htmlInput = TextInput({ DOM: sources.DOM, props: htmlInputProps });
 
-  const jsInputProps = xs.of({ label: "JS" });
+  const jsInputProps = xs.of({ label: "JS: " });
   const jsInput = TextInput({ DOM: sources.DOM, props: jsInputProps });
 
-  const cssInputProps = xs.of({ label: "CSS" });
+  const cssInputProps = xs.of({ label: "CSS: " });
   const cssInput = TextInput({ DOM: sources.DOM, props: cssInputProps });
 
   const values$ = model(htmlInput.value, jsInput.value, cssInput.value);
   const vdom$ = view(values$, htmlInput.DOM, jsInput.DOM, cssInput.DOM);
 
   return {
-    DOM: vdom$
+    DOM: vdom$,
+    html: values$
   };
 }
 

@@ -1,9 +1,17 @@
+import xs from "xstream";
 import { run } from "@cycle/run";
-import { makeDOMDriver } from "@cycle/dom";
+import { div, pre, makeDOMDriver } from "@cycle/dom";
 import Renderer from "./components/Renderer";
 
 function main(sources) {
-  return Renderer(sources);
+  const renderer = Renderer(sources);
+  const vdom$ = xs
+    .combine(renderer.html, renderer.DOM)
+    .map(([html, rendererVTree]) => div([rendererVTree, pre(html)]));
+
+  return {
+    DOM: vdom$
+  };
 }
 
 run(main, {

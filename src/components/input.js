@@ -18,7 +18,7 @@ function view(props$, value$) {
   return xs
     .combine(props$, value$)
     .map(([props, value]) =>
-      div([span(props.label), br(), textarea(".input")])
+      div([span(".label", props.label), br(), textarea(".input")])
     );
 }
 
