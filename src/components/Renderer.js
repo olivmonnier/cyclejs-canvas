@@ -2,6 +2,7 @@ import xs from "xstream";
 import { div, iframe } from "@cycle/dom";
 import isolate from "@cycle/isolate";
 import TextInput from "./input";
+import JsInput from "./jsInput";
 
 function model(htmlInputValue$, jsInputValue$, cssInputValue$) {
   return xs
@@ -45,7 +46,7 @@ function Renderer(sources) {
   const htmlInput = TextInput({ DOM: sources.DOM, props: htmlInputProps });
 
   const jsInputProps = xs.of({ label: "JS: " });
-  const jsInput = TextInput({ DOM: sources.DOM, props: jsInputProps });
+  const jsInput = JsInput({ DOM: sources.DOM, props: jsInputProps });
 
   const cssInputProps = xs.of({ label: "CSS: " });
   const cssInput = TextInput({ DOM: sources.DOM, props: cssInputProps });

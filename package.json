@@ -8,6 +8,7 @@
     "build": "parcel build index.html"
   },
   "dependencies": {
+    "@babel/standalone": "7.0.0-beta.54",
     "@cycle/dom": "20.4.0",
     "@cycle/isolate": "3.4.0",
     "@cycle/run": "4.4.0",
