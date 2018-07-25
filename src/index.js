@@ -5,6 +5,7 @@ import TextInput from './components/input';
 import JsInput from './components/jsInput';
 import Preview from './components/preview';
 import Code from './components/code';
+import makeLogDriver from './drivers/log';
 
 function model(htmlInputValue$, jsInputValue$, cssInputValue$) {
   return xs
@@ -13,16 +14,17 @@ function model(htmlInputValue$, jsInputValue$, cssInputValue$) {
     .startWith({ html: '', js: '', css: '' });
 }
 
-function view(htmlInputDOM$, jsInputDOM$, cssInputDOM$, previewDOM$, codeDOM$) {
+function view(htmlInputDOM$, jsInputDOM$, cssInputDOM$, previewDOM$, codeDOM$, log$) {
   return xs
-    .combine(htmlInputDOM$, jsInputDOM$, cssInputDOM$, previewDOM$, codeDOM$)
-    .map(([htmlInputVTree, jsInputVTree, cssInputVTree, previewVTree, codeVTree]) =>
+    .combine(htmlInputDOM$, jsInputDOM$, cssInputDOM$, previewDOM$, codeDOM$, log$)
+    .map(([htmlInputVTree, jsInputVTree, cssInputVTree, previewVTree, codeVTree, log]) =>
       div([
         htmlInputVTree,
         jsInputVTree,
         cssInputVTree,
         previewVTree,
-        codeVTree
+        codeVTree,
+        div(log)
       ])
     );
 }
@@ -40,9 +42,9 @@ function main(sources) {
   const values$ = model(htmlInput.value, jsInput.value, cssInput.value);
   const preview = Preview({ props: values$ });
 
-  const code = Code({ html: preview.html })
+  const code = Code({ html: preview.html });
 
-  const vdom$ = view(htmlInput.DOM, jsInput.DOM, cssInput.DOM, preview.DOM, code.DOM);
+  const vdom$ = view(htmlInput.DOM, jsInput.DOM, cssInput.DOM, preview.DOM, code.DOM, sources.LOG);
 
   return {
     DOM: vdom$
@@ -50,5 +52,6 @@ function main(sources) {
 }
 
 run(main, {
-  DOM: makeDOMDriver("#app")
+  DOM: makeDOMDriver("#app"),
+  LOG: makeLogDriver()
 });
