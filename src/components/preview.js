@@ -29,7 +29,7 @@ function view(html$, htmlInputDOM$, jsInputDOM$, cssInputDOM$) {
     );
 }
 
-function preview(html, js, css) {
+function transformHtml(html, js, css) {
   return `
     <html>
       <head>
@@ -47,7 +47,7 @@ function preview(html, js, css) {
     `;
 }
 
-function Renderer(sources) {
+function Preview(sources) {
   const htmlInputProps = xs.of({ label: "HTML: " });
   const htmlInput = TextInput({ DOM: sources.DOM, props: htmlInputProps });
 
@@ -58,7 +58,7 @@ function Renderer(sources) {
   const cssInput = TextInput({ DOM: sources.DOM, props: cssInputProps });
 
   const values$ = model(htmlInput.value, jsInput.value, cssInput.value);
-  const html$ = values$.map(({ html, js, css}) => preview(html, js, css));
+  const html$ = values$.map(({ html, js, css}) => transformHtml(html, js, css));
   const vdom$ = view(html$, htmlInput.DOM, jsInput.DOM, cssInput.DOM);
 
   return {
@@ -68,8 +68,8 @@ function Renderer(sources) {
   };
 }
 
-const IsolatedRenderer = function(sources) {
-  return isolate(Renderer)(sources);
+const IsolatedPreview = function(sources) {
+  return isolate(Preview)(sources);
 };
 
-export default IsolatedRenderer;
+export default IsolatedPreview;

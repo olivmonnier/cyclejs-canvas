@@ -1,13 +1,13 @@
 import xs from "xstream";
 import { run } from "@cycle/run";
 import { div, pre, makeDOMDriver } from "@cycle/dom";
-import Renderer from "./components/Renderer";
+import Preview from "./components/preview";
 
 function main(sources) {
-  const renderer = Renderer(sources);
+  const preview = Preview(sources);
   const vdom$ = xs
-    .combine(renderer.html, renderer.DOM)
-    .map(([html, rendererVTree]) => div([rendererVTree, pre(html)]));
+    .combine(preview.html, preview.DOM)
+    .map(([html, previewVTree]) => div([previewVTree, pre(html)]));
 
   return {
     DOM: vdom$
