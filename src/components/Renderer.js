@@ -7,38 +7,44 @@ import JsInput from "./jsInput";
 function model(htmlInputValue$, jsInputValue$, cssInputValue$) {
   return xs
     .combine(htmlInputValue$, jsInputValue$, cssInputValue$)
-    .map(
-      ([html, js, css]) => `
-      <html>
-        <head>
-          <style>${css}</style>
-        </head>
-        <body>
-         ${html}
-          <script>${js}</script>
-        </body>
-      </html>
-    `
-    )
-    .startWith("");
+    .map(([html, js, css]) => ({ html, js, css }))
+    .startWith({ html: '', js: '', css: '' });
 }
 
-function view(values$, htmlInputDOM$, jsInputDOM$, cssInputDOM$) {
+function view(html$, htmlInputDOM$, jsInputDOM$, cssInputDOM$) {
   return xs
-    .combine(values$, htmlInputDOM$, jsInputDOM$, cssInputDOM$)
-    .map(([values, htmlInputVTree, jsInputVTree, cssInputVTree]) =>
+    .combine(html$, htmlInputDOM$, jsInputDOM$, cssInputDOM$)
+    .map(([html, htmlInputVTree, jsInputVTree, cssInputVTree]) =>
       div([
         htmlInputVTree,
         jsInputVTree,
         cssInputVTree,
         iframe({
           attrs: {
-            srcdoc: values,
+            srcdoc: html,
             sandbox: "allow-scripts"
           }
         })
       ])
     );
+}
+
+function preview(html, js, css) {
+  return `
+    <html>
+      <head>
+        <style>
+          ${css}
+        </style>
+      </head>
+      <body>
+        ${html}
+        <script>
+          ${js}
+        </script>
+      </body>
+    </html>
+    `;
 }
 
 function Renderer(sources) {
@@ -52,11 +58,13 @@ function Renderer(sources) {
   const cssInput = TextInput({ DOM: sources.DOM, props: cssInputProps });
 
   const values$ = model(htmlInput.value, jsInput.value, cssInput.value);
-  const vdom$ = view(values$, htmlInput.DOM, jsInput.DOM, cssInput.DOM);
+  const html$ = values$.map(({ html, js, css}) => preview(html, js, css));
+  const vdom$ = view(html$, htmlInput.DOM, jsInput.DOM, cssInput.DOM);
 
   return {
     DOM: vdom$,
-    html: values$
+    values: values$,
+    html: html$
   };
 }
 
