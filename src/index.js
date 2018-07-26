@@ -45,7 +45,7 @@ function main(sources) {
 
   const code = Code({ html: preview.html });
   
-  const terminal = Console({ logs: sources.LOG });
+  const terminal = Console({ DOM: sources.DOM, logs: sources.LOG });
 
   const vdom$ = view(htmlInput.DOM, jsInput.DOM, cssInput.DOM, preview.DOM, code.DOM, terminal.DOM);
 

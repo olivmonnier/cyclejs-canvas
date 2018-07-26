@@ -1,11 +1,11 @@
 import xs from 'xstream';
 import {adapt} from '@cycle/run/lib/adapt';
 
+const methods = ['log', 'error', 'warn'];
+
 function logDriver() {
   const incomingLogs$ = xs.create({
     start: function(listener) {
-      const methods = ['log', 'error', 'warn'];
-
       methods.forEach(function(method) {
         const oldMethod = console[method];
 
@@ -19,8 +19,6 @@ function logDriver() {
       });
     },
     stop: function() {
-      const methods = ['log', 'error', 'warn'];
-      
       methods.forEach(function(method) {
         const oldMethod = console[method];
 
@@ -29,7 +27,9 @@ function logDriver() {
         } 
       });
     }
-  }).startWith({ type: null, message: '' }).remember();
+  })
+  .startWith({ type: null, message: '' })
+  .remember();
 
   return adapt(incomingLogs$);
 }

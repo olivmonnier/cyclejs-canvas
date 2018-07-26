@@ -1,12 +1,18 @@
-import { div } from '@cycle/dom';
+import xs from 'xstream';
+import { div, button } from '@cycle/dom';
 import isolate from '@cycle/isolate';
 
 function Console(sources) {
-  const logs$ = sources.logs.fold((acc, log) => acc.concat([log]), []);
+  const clear$ = sources.DOM
+    .select('.clear').events('click').map(ev => 1).mapTo(true);
+  const change$ = xs.merge(sources.logs, clear$);
+  const logs$ = change$.fold((acc, x) => x == true ? [] : acc.concat([x]), [])
+
   const vdom$ = logs$.map(logs =>
-    div(logs.map(log => 
-      div(`${log.type ? log.type.toUpperCase() + ': ' : ''}${log.message}`))
-    )
+    div([
+      button('.clear', 'Clear'),
+      div(logs.map(log => div(`${log.type ? log.type.toUpperCase() + ': ' : ''}${log.message}`)))
+    ])
   )
 
   return {
