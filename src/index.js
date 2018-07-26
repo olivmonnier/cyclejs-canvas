@@ -5,6 +5,7 @@ import TextInput from './components/input';
 import JsInput from './components/jsInput';
 import Preview from './components/preview';
 import Code from './components/code';
+import Console from './components/console';
 import makeLogDriver from './drivers/log';
 
 function model(htmlInputValue$, jsInputValue$, cssInputValue$) {
@@ -14,17 +15,17 @@ function model(htmlInputValue$, jsInputValue$, cssInputValue$) {
     .startWith({ html: '', js: '', css: '' });
 }
 
-function view(htmlInputDOM$, jsInputDOM$, cssInputDOM$, previewDOM$, codeDOM$, log$) {
+function view(htmlInputDOM$, jsInputDOM$, cssInputDOM$, previewDOM$, codeDOM$, consoleDOM$) {
   return xs
-    .combine(htmlInputDOM$, jsInputDOM$, cssInputDOM$, previewDOM$, codeDOM$, log$)
-    .map(([htmlInputVTree, jsInputVTree, cssInputVTree, previewVTree, codeVTree, log]) =>
+    .combine(htmlInputDOM$, jsInputDOM$, cssInputDOM$, previewDOM$, codeDOM$, consoleDOM$)
+    .map(([htmlInputVTree, jsInputVTree, cssInputVTree, previewVTree, codeVTree, consoleVTree]) =>
       div([
         htmlInputVTree,
         jsInputVTree,
         cssInputVTree,
         previewVTree,
         codeVTree,
-        div(`${log.type ? log.type.toUpperCase() + ': ' : ''}${log.message}`)
+        consoleVTree
       ])
     );
 }
@@ -43,8 +44,10 @@ function main(sources) {
   const preview = Preview({ props: values$ });
 
   const code = Code({ html: preview.html });
+  
+  const terminal = Console({ logs: sources.LOG });
 
-  const vdom$ = view(htmlInput.DOM, jsInput.DOM, cssInput.DOM, preview.DOM, code.DOM, sources.LOG);
+  const vdom$ = view(htmlInput.DOM, jsInput.DOM, cssInput.DOM, preview.DOM, code.DOM, terminal.DOM);
 
   return {
     DOM: vdom$
