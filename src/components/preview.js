@@ -30,6 +30,10 @@ function getIframeHtml(html, js, css) {
       <body>
         ${html}
         <script>
+          window.onerror = function(message, source, lineno, colno, error) {
+            console.error(message, source, lineno, colno, error)
+          }
+
           methods = ['log', 'error', 'warn'];
           methods.forEach(function(method) {
             var oldMethod = console[method];

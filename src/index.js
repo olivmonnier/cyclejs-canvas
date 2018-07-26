@@ -24,7 +24,7 @@ function view(htmlInputDOM$, jsInputDOM$, cssInputDOM$, previewDOM$, codeDOM$, l
         cssInputVTree,
         previewVTree,
         codeVTree,
-        div(log)
+        div(`${log.type ? log.type.toUpperCase() + ': ' : ''}${log.message}`)
       ])
     );
 }

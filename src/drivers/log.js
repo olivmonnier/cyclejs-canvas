@@ -5,18 +5,30 @@ function logDriver() {
   const oldLog = console.log;
   const incomingLogs$ = xs.create({
     start: function(listener) {
-      console.log = function(m) {
-        listener.next(m);
-        oldLog.apply(console, arguments)
-      }
+      const methods = ['log', 'error', 'warn'];
+      methods.forEach(function(method) {
+        const oldMethod = console[method];
+
+        console[method] = function(m) {
+          listener.next({ 
+            type: method, 
+            message: typeof m !== 'string' ? JSON.stringify(m) : m 
+          });
+          oldMethod.apply(console, arguments);
+        } 
+      });
     },
     stop: function() {
-      console.log = function(m) {
-        oldLog.apply(console, arguments)
-      }
+      const methods = ['log', 'error', 'warn'];
+      methods.forEach(function(method) {
+        const oldMethod = console[method];
+
+        console[method] = function(m) {
+          oldMethod.apply(console, arguments);
+        } 
+      });
     }
-  }).startWith('')
-  .map(log => typeof log == 'string' ? log : JSON.stringify(log));
+  }).startWith({ type: null, message: '' });
 
   return adapt(incomingLogs$);
 }
