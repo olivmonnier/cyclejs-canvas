@@ -2,34 +2,36 @@ import xs from 'xstream';
 import { iframe } from "@cycle/dom";
 import isolate from "@cycle/isolate";
 
+const domParser = new DOMParser();
+
 function transformHtml(html, js, css) {
-  return `
-    <html>
-      <head>
-        <style>
-          ${css}
-        </style>
-      </head>
-      <body>
-        ${html}
-        <script>
-          ${js}
-        </script>
-      </body>
-    </html>
-    `;
+  const layoutString = `<html><head></head><body></body></html>`;
+  const $style = document.createElement('style');
+  const $script = document.createElement('script');
+
+  $style.innerHTML = css;
+  $script.innerHTML = js;
+  
+  const doc = domParser.parseFromString(layoutString, 'text/html');
+
+  doc.head.appendChild($style);
+  doc.body.innerHTML = html;
+  doc.body.appendChild($script)
+
+  return indentHtml(doc.firstChild, 0).outerHTML;
 }
 
 function getIframeHtml(htmlString) {
-  const domParser = new DOMParser();
   const doc = domParser.parseFromString(htmlString, 'text/html');
-  const script = document.createElement('script');
-  script.innerHTML = `
+  const $script = doc.body.querySelector('script');
+  const $newScript = document.createElement('script');
+
+  $newScript.innerHTML = `
     window.onerror = function(message, source, lineno, colno, error) {
       console.error(message, source, lineno, colno, error)
     }
 
-    methods = ['log', 'error', 'warn'];
+    var methods = ['log', 'error', 'warn'];
     methods.forEach(function(method) {
       var oldMethod = console[method];
       console[method] = function(m) {
@@ -38,9 +40,30 @@ function getIframeHtml(htmlString) {
       } 
     });
   `
-  doc.body.appendChild(script);
+  
+  doc.body.insertBefore($newScript, $script);
 
   return doc.firstChild.outerHTML;
+}
+
+function indentHtml(node, level) {
+  let textNode;
+  const indentBefore = new Array(level++ + 1).join('  '),
+    indentAfter  = new Array(level - 1).join('  ');
+
+  for (let i = 0; i < node.children.length; i++) {
+    textNode = document.createTextNode('\n' + indentBefore);
+    node.insertBefore(textNode, node.children[i]);
+
+    indentHtml(node.children[i], level);
+
+    if (node.lastElementChild == node.children[i]) {
+      textNode = document.createTextNode('\n' + indentAfter);
+      node.appendChild(textNode);
+    }
+  }
+
+  return node;
 }
 
 function Preview(sources) {
