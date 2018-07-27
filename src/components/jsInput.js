@@ -1,18 +1,18 @@
 import { transform } from "@babel/standalone";
 import isolate from "@cycle/isolate";
 import TextInput from "./input";
- 
+
+function transformES6(code){
+  try {
+    return transform(code, { presets: ["es2015", "stage-3"] }).code
+  } catch(e) {
+    return ''
+  }
+}
+
 function JsInput(sources) {
   const textInput = TextInput(sources);
-  const newValue$ = textInput.value.map(
-    value => {
-      try {
-        return transform(value, { presets: ["es2015", "stage-3"] }).code
-      } catch(e) {
-        return ''
-      }
-    }
-  );
+  const newValue$ = textInput.value.map(transformES6);
 
   return {
     DOM: textInput.DOM,
