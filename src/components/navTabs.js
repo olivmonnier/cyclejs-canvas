@@ -1,7 +1,6 @@
 import xs from 'xstream';
 import { div, label, input } from '@cycle/dom';
 import isolate from '@cycle/isolate';
-import { access } from 'fs';
 
 function NavTabs(sources) {
   const inputHtml$ = sources.DOM.select('.inputHtml').events('change').mapTo('html');
