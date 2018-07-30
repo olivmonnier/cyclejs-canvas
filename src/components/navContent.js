@@ -15,10 +15,10 @@ function model(htmlInputValue$, jsInputValue$, cssInputValue$) {
 }
 
 function NavContent(sources) {
-  const htmlInputProps = xs.of({ label: "HTML: " });
+  const htmlInputProps = sources.tabs.map(({ html }) => ({ label: "HTML: ", visible: html }));
   const htmlInput = TextInput({ DOM: sources.DOM, props: htmlInputProps });
 
-  const jsInputProps = xs.of({ label: "JS: " });
+  const jsInputProps = sources.tabs.map(({ js }) => ({ label: "JS: ", visible: js }));
   const jsInput = JsInput({ DOM: sources.DOM, props: jsInputProps });
 
   const cssInputProps = xs.of({ label: "CSS: " });
@@ -31,15 +31,15 @@ function NavContent(sources) {
   
   const terminal = Console({ DOM: sources.DOM, logs: sources.LOG });
 
-  const vdom$ = xs.combine(htmlInput.DOM, jsInput.DOM, cssInput.DOM, preview.DOM, code.DOM, terminal.DOM, sources.tabs)
-    .map(([htmlInputVTree, jsInputVTree, cssInputVTree, previewVTree, codeVTree, terminalVTree, tabs]) => 
+  const vdom$ = xs.combine(htmlInput.DOM, jsInput.DOM, cssInput.DOM, preview.DOM, code.DOM, terminal.DOM)
+    .map(([htmlInputVTree, jsInputVTree, cssInputVTree, previewVTree, codeVTree, terminalVTree]) => 
       div([
-        tabs.html ? htmlInputVTree : null,
-        tabs.css ? cssInputVTree : null,
-        tabs.js ? jsInputVTree : null,
-        tabs.preview ? previewVTree : null,
-        tabs.console ? terminalVTree : null,
-        tabs.output ? codeVTree : null
+        htmlInputVTree,
+        cssInputVTree,
+        jsInputVTree,
+        previewVTree,
+        terminalVTree,
+        codeVTree
       ])
     )
 
