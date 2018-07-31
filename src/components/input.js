@@ -10,30 +10,24 @@ function intent(domSource) {
     .startWith("");
 }
 
-function model(newValue$, props$) {
-  return xs.merge(props$, newValue$).remember();
-}
-
-function view(props$, value$) {
-  return xs
-    .combine(props$, value$)
-    .map(([props, value]) =>
+function view(props$) {
+  return props$
+    .map(({ visible, label }) =>
       div({
         attrs: {
-          style: `display: ${props.visible ? 'block' : 'none'}`
+          style: `display: ${visible ? 'block' : 'none'}`
         }
-      }, [span(".label", props.label), br(), textarea(".input")])
+      }, [span(".label", label), br(), textarea(".input")])
     );
 }
 
 function TextInput(sources) {
   const change$ = intent(sources.DOM);
-  const value$ = model(change$, sources.props);
-  const vdom$ = view(sources.props, value$);
+  const vdom$ = view(sources.props);
 
   return {
     DOM: vdom$,
-    value: value$
+    value: change$
   };
 }
 
