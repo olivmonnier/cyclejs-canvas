@@ -8,11 +8,17 @@ function Console(sources) {
   const change$ = xs.merge(sources.logs, clear$);
   const logs$ = change$.fold((acc, x) => x == true ? [] : acc.concat([x]), [])
 
-  const vdom$ = logs$.map(logs =>
-    div([
-      button('.clear', 'Clear'),
-      div(logs.map(log => div(`${log.type ? log.type.toUpperCase() + ': ' : ''}${log.message}`)))
-    ])
+  const vdom$ = xs
+    .combine(logs$, sources.props)
+    .map(([logs, props]) =>
+      div({
+        attrs: {
+          style: `display: ${props.visible ? 'block' : 'none'}`
+        }
+      }, [
+        button('.clear', 'Clear'),
+        div(logs.map(log => div(`${log.type ? log.type.toUpperCase() + ': ' : ''}${log.message}`)))
+      ])
   )
 
   return {

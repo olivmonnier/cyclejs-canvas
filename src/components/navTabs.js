@@ -7,9 +7,10 @@ function NavTabs(sources) {
   const inputCss$ = sources.DOM.select('.inputCss').events('change').mapTo('css');
   const inputJs$ = sources.DOM.select('.inputJs').events('change').mapTo('js');
   const inputPreview$ = sources.DOM.select('.inputPreview').events('change').mapTo('preview');
-  const inputConsole$ = sources.DOM.select('.inputConsole').events('change').mapTo('console');
+  const inputOutput$ = sources.DOM.select('.inputOutput').events('change').mapTo('output');
+  const inputConsole$ = sources.DOM.select('.inputConsole').events('change').mapTo('terminal');
 
-  const state$ = xs.merge(inputHtml$, inputCss$, inputJs$, inputPreview$, inputConsole$)
+  const state$ = xs.merge(inputHtml$, inputCss$, inputJs$, inputPreview$, inputOutput$, inputConsole$)
     .fold((acc, state) => {
       acc[state] = !acc[state];
       return acc;
@@ -18,7 +19,7 @@ function NavTabs(sources) {
       css: false,
       js: false,
       preview: false,
-      console: false,
+      terminal: false,
       output: false
     })
 

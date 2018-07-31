@@ -1,9 +1,15 @@
-import { pre } from '@cycle/dom';
+import xs from 'xstream';
+import { pre, div } from '@cycle/dom';
 import isolate from '@cycle/isolate';
 
 function Code(sources) {
-  const vdom$ = sources.html.map(html =>
-    pre(html)
+  const props$ = sources.props.startWith({ html: '', visible: false });
+  const vdom$ = props$.map(({html, visible}) =>
+    div({
+      attrs: {
+        style: `display: ${visible ? 'block' :  'none'}`
+      }
+    }, html)
   )
 
   return {

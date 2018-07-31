@@ -67,17 +67,22 @@ function indentHtml(node, level) {
 }
 
 function Preview(sources) {
-  const props$ = sources.props.startWith({ html: '', js: '', css: '' });
-  const html$ = props$.map(({ html, js, css }) => transformHtml(html, js, css));
-  const iframeHtml$ = xs.from(html$).map(html => getIframeHtml(html));
-  const vdom$ = iframeHtml$.map(html =>
-    iframe({
-      attrs: {
-        srcdoc: html,
-        sandbox: "allow-scripts allow-same-origin"
-      }
-    })
-  )
+  const props$ = sources.props.startWith({ values: { html: '', js: '', css: '' }, visible: true });
+  const html$ = props$.map(({ values }) => {
+    const { html, js, css } = values;
+    return transformHtml(html, js, css)
+  });
+  const iframeHtml$ = html$.map(html => getIframeHtml(html));
+  const vdom$ = xs.combine(iframeHtml$, props$)
+    .map(([html, props]) =>
+      iframe({
+        attrs: {
+          style: `display: ${props.visible ? 'block' : 'none'}`,
+          srcdoc: html,
+          sandbox: "allow-scripts allow-same-origin"
+        }
+      })
+    )
 
   return {
     DOM: vdom$,

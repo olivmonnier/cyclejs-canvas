@@ -18,7 +18,11 @@ function view(props$, value$) {
   return xs
     .combine(props$, value$)
     .map(([props, value]) =>
-      div([span(".label", props.label), br(), textarea(".input")])
+      div({
+        attrs: {
+          style: `display: ${props.visible ? 'block' : 'none'}`
+        }
+      }, [span(".label", props.label), br(), textarea(".input")])
     );
 }
 
