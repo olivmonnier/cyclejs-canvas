@@ -15,9 +15,9 @@ function view(props$) {
     .map(({ visible, label }) =>
       div({
         attrs: {
-          style: `display: ${visible ? 'block' : 'none'}`
+          style: !visible ? 'display: none;' : ''
         }
-      }, [span(".label", label), br(), textarea(".input")])
+      }, [span(".label", label), textarea(".input")])
     );
 }
 

@@ -1,3 +1,4 @@
+import './styles.scss';
 import xs from "xstream";
 import { run } from "@cycle/run";
 import { div, makeDOMDriver } from "@cycle/dom";

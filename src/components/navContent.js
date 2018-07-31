@@ -36,13 +36,17 @@ function NavContent(sources) {
 
   const vdom$ = xs.combine(htmlInput.DOM, jsInput.DOM, cssInput.DOM, preview.DOM, code.DOM, terminal.DOM)
     .map(([htmlInputVTree, jsInputVTree, cssInputVTree, previewVTree, codeVTree, terminalVTree]) => 
-      div([
-        htmlInputVTree,
-        cssInputVTree,
-        jsInputVTree,
-        previewVTree,
-        codeVTree,
-        terminalVTree
+      div('.content', [
+        div('.row', [
+          htmlInputVTree,
+          cssInputVTree,
+          jsInputVTree,
+          previewVTree,
+        ]),
+        div('.row', [
+          codeVTree,
+          terminalVTree
+        ])
       ])
     )
 

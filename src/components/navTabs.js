@@ -1,5 +1,5 @@
 import xs from 'xstream';
-import { div, label, input } from '@cycle/dom';
+import { div, label, input, span } from '@cycle/dom';
 import isolate from '@cycle/isolate';
 
 function NavTabs(sources) {
@@ -22,34 +22,24 @@ function NavTabs(sources) {
       terminal: false,
       output: false
     })
-
+  const tabs = [
+    ['.inputHtml', 'html'],
+    ['.inputCss', 'css'],
+    ['.inputJs', 'js'],
+    ['.inputPreview', 'preview'],
+    ['.inputOutput', 'output'],
+    ['.inputConsole', 'console']
+  ]
   const vdom$ = state$.map(state =>
-    div([
-      label([
-        input('.inputHtml', { attrs: { type: 'checkbox' } }),
-        'html'
-      ]),
-      label([
-        input('.inputCss', { attrs: { type: 'checkbox'} }),
-        'css'
-      ]),
-      label([
-        input('.inputJs', { attrs: { type: 'checkbox'} }),
-        'js'
-      ]),
-      label([
-        input('.inputPreview', { attrs: { type: 'checkbox'} }),
-        'preview'
-      ]),
-      label([
-        input('.inputOutput', { attrs: { type: 'checkbox'} }),
-        'output'
-      ]),
-      label([
-        input('.inputConsole', { attrs: { type: 'checkbox'} }),
-        'console'
-      ])
-    ])
+    div('.tabs', 
+      tabs.map(tab =>
+        label([
+          tab[1],
+          input(tab[0], { attrs: { type: 'checkbox' } }),
+          span('.checkmark')
+        ])
+      )
+    )
   )
 
   return {

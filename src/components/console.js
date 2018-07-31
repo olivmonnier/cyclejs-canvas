@@ -1,5 +1,5 @@
 import xs from 'xstream';
-import { div, button } from '@cycle/dom';
+import { div, button, span } from '@cycle/dom';
 import isolate from '@cycle/isolate';
 
 function Console(sources) {
@@ -13,12 +13,16 @@ function Console(sources) {
     .map(([logs, props]) =>
       div({
         attrs: {
-          style: `display: ${props.visible ? 'block' : 'none'}`
+          style: !props.visible ? 'display: none;' : ''
         }
       }, [
-        button('.clear', 'Clear'),
-        div(logs.map(log => div(`${log.type ? log.type.toUpperCase() + ': ' : ''}${log.message}`)))
-      ])
+          span('.label', 'Console: '),
+          div([
+            button('.clear', 'Clear'),
+            div(logs.map(log => div(`${log.type ? log.type.toUpperCase() + ': ' : ''}${log.message}`)))
+          ])
+        ]
+      )
   )
 
   return {

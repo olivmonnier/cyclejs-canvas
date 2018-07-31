@@ -1,0 +1,81 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  margin: 0 1.2em;
+}
+
+.tabs {
+  padding: .4em 0;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+
+  > label {
+    position: relative;
+    margin-right: 8px;
+    margin-bottom: .4em;
+    padding: .4em 1.2em;
+    display: inline-block;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 12px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    input {
+      position: absolute;
+      opacity: 0;
+
+      &:checked ~ .checkmark {
+        background-color: #ccc;
+      }
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #eee;
+      z-index: -1;
+    }
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+
+  > * {
+    margin-bottom: .5em;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 300px;
+    overflow-y: auto;
+
+    > .label {
+      padding: .2em 0;
+      font-weight: 600;
+
+      & + * {
+        flex-grow: 1;
+      }
+    }
+  }
+
+  textarea {
+    resize: none;
+  }
+}

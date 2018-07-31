@@ -1,5 +1,5 @@
 import xs from 'xstream';
-import { iframe } from "@cycle/dom";
+import { div, iframe, span } from "@cycle/dom";
 import isolate from "@cycle/isolate";
 
 const domParser = new DOMParser();
@@ -75,13 +75,19 @@ function Preview(sources) {
   const iframeHtml$ = html$.map(html => getIframeHtml(html));
   const vdom$ = xs.combine(iframeHtml$, props$)
     .map(([html, props]) =>
-      iframe({
+      div({
         attrs: {
-          style: `display: ${props.visible ? 'block' : 'none'}`,
-          srcdoc: html,
-          sandbox: "allow-scripts allow-same-origin"
+          style: !props.visible ? 'display: none;' : ''
         }
-      })
+      }, [
+        span('.label', 'Preview: '),
+        iframe({
+          attrs: {
+            srcdoc: html,
+            sandbox: "allow-scripts allow-same-origin"
+          }
+        })
+      ])
     )
 
   return {
