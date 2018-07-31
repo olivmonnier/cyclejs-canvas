@@ -1,9 +1,10 @@
+<!DOCTYPE html>
 <html>
-
 <head>
-	<title>Sandbox</title>
 	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Sandbox</title>
 	<link rel="manifest" href="src/manifest.webmanifest">
 </head>
 
@@ -13,7 +14,10 @@
 	<script src="src/index.js"></script>
 	<script>
 		if ('serviceWorker' in navigator) {
-			navigator.serviceWorker.register('/service-worker.js');
+			navigator.serviceWorker.register('/service-worker.js')
+				.then(function(registration) {
+					console.log('Service Worker Registered')
+				})
 		}
 	</script>
 </body>
