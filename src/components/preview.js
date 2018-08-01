@@ -67,9 +67,9 @@ function indentHtml(node, level) {
 }
 
 function Preview(sources) {
-  const props$ = sources.props.startWith({ values: { html: '', js: '', css: '' }, visible: true });
-  const html$ = props$.map(({ values }) => {
-    const { html, js, css } = values;
+  const props$ = sources.props;
+  const values$ = sources.values.startWith({ html: '', js: '', css: '' });
+  const html$ = values$.map(({ html, js, css }) => {
     return transformHtml(html, js, css)
   });
   const iframeHtml$ = html$.map(html => getIframeHtml(html));
@@ -80,7 +80,7 @@ function Preview(sources) {
           style: !props.visible ? 'display: none;' : ''
         }
       }, [
-        span('.label', 'Preview'),
+        span('.label', props.label),
         iframe({
           attrs: {
             srcdoc: html,

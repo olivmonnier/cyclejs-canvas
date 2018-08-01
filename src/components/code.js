@@ -1,15 +1,16 @@
 import xs from 'xstream';
-import { pre, div, span } from '@cycle/dom';
+import { pre, code, div, span } from '@cycle/dom';
 import isolate from '@cycle/isolate';
 
 function Code(sources) {
-  const props$ = sources.props.startWith({ html: '', visible: false });
-  const vdom$ = props$.map(({html, visible}) =>
+  const props$ = sources.props;
+  const html$ = sources.html;
+  const vdom$ = xs.combine(html$, props$).map(([html, props]) =>
     div({
       attrs: {
-        style: !visible ? 'display: none;' : ''
+        style: !props.visible ? 'display: none;' : ''
       }
-    }, [span('.label', 'Output'), pre(html)])
+    }, [span('.label', props.label), pre(code('.html', html))])
   )
 
   return {

@@ -11,12 +11,12 @@ function Console(sources) {
   const vdom$ = xs
     .combine(logs$, sources.props)
     .map(([logs, props]) =>
-      div({
+      div('.console', {
         attrs: {
           style: !props.visible ? 'display: none;' : ''
         }
       }, [
-          span('.label', 'Console'),
+          span('.label', props.label),
           div([
             button('.clear', 'Clear'),
             div(logs.map(log => div(`${log.type ? log.type.toUpperCase() + ': ' : ''}${log.message}`)))
