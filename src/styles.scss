@@ -15,7 +15,7 @@ body {
   position: sticky;
   top: 0;
   background-color: #fff;
-  z-index: 2;
+  z-index: 20;
 
   > label {
     position: relative;
@@ -81,6 +81,7 @@ body {
       display: inline-block;
       background-color: #eee;
       font-size: 12px;
+      z-index: 10;
 
       & + * {
         flex-grow: 1;

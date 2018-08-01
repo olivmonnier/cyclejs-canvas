@@ -15,7 +15,7 @@ function main(sources) {
         navTabsVTree,
         navContentVTree
       ])
-    )
+    );
 
   return {
     DOM: vdom$
