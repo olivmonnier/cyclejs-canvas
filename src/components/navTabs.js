@@ -16,16 +16,16 @@ function NavTabs(sources) {
       return acc;
     }, {
       html: true,
-      css: true,
-      js: true,
+      css: false,
+      js: false,
       preview: true,
       terminal: false,
       output: false
     })
   const tabs = [
     ['.inputHtml', 'html', true],
-    ['.inputCss', 'css', true],
-    ['.inputJs', 'js', true],
+    ['.inputCss', 'css', false],
+    ['.inputJs', 'js', false],
     ['.inputPreview', 'preview', true],
     ['.inputOutput', 'output', false],
     ['.inputConsole', 'console', false]

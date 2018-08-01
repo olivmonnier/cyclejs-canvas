@@ -19,7 +19,7 @@ function TextInput(sources) {
   const value$ = xs.create().startWith('');
   const vdom$ = view(props$);
 
-  props$.compose(delay(100)).take(1).addListener({
+  props$.filter(props => props.visible).compose(delay(100)).take(1).addListener({
     next: ({mode}) => {
       const editor = CodeMirror.fromTextArea(document.querySelector(`textarea.${mode}`), {
         lineNumbers: true,
@@ -29,7 +29,7 @@ function TextInput(sources) {
 
       editor.on('change', () => value$.shamefullySendNext(editor.getValue()))
     }
-  })
+  });
 
   return {
     DOM: vdom$,
