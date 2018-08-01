@@ -9,7 +9,7 @@ function Code(sources) {
       attrs: {
         style: !visible ? 'display: none;' : ''
       }
-    }, [span('.label', 'Output: '), pre(html)])
+    }, [span('.label', 'Output'), pre(html)])
   )
 
   return {

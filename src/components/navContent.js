@@ -15,13 +15,13 @@ function model(htmlInputValue$, jsInputValue$, cssInputValue$) {
 }
 
 function NavContent(sources) {
-  const htmlInputProps = sources.tabs.map(({ html }) => ({ label: "HTML: ", visible: html }));
+  const htmlInputProps = sources.tabs.map(({ html }) => ({ label: "HTML", visible: html }));
   const htmlInput = TextInput({ DOM: sources.DOM, props: htmlInputProps });
 
-  const jsInputProps = sources.tabs.map(({ js }) => ({ label: "JS: ", visible: js }));
+  const jsInputProps = sources.tabs.map(({ js }) => ({ label: "JS", visible: js }));
   const jsInput = JsInput({ DOM: sources.DOM, props: jsInputProps });
 
-  const cssInputProps = sources.tabs.map(({ css }) => ({ label: "CSS: ", visible: css }));
+  const cssInputProps = sources.tabs.map(({ css }) => ({ label: "CSS", visible: css }));
   const cssInput = TextInput({ DOM: sources.DOM, props: cssInputProps });
 
   const values$ = model(htmlInput.value, jsInput.value, cssInput.value);

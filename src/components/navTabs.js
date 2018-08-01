@@ -15,27 +15,27 @@ function NavTabs(sources) {
       acc[state] = !acc[state];
       return acc;
     }, {
-      html: false,
+      html: true,
       css: false,
       js: false,
-      preview: false,
+      preview: true,
       terminal: false,
       output: false
     })
   const tabs = [
-    ['.inputHtml', 'html'],
-    ['.inputCss', 'css'],
-    ['.inputJs', 'js'],
-    ['.inputPreview', 'preview'],
-    ['.inputOutput', 'output'],
-    ['.inputConsole', 'console']
+    ['.inputHtml', 'html', true],
+    ['.inputCss', 'css', false],
+    ['.inputJs', 'js', false],
+    ['.inputPreview', 'preview', true],
+    ['.inputOutput', 'output', false],
+    ['.inputConsole', 'console', false]
   ]
   const vdom$ = state$.map(state =>
     div('.tabs', 
       tabs.map(tab =>
         label([
           tab[1],
-          input(tab[0], { attrs: { type: 'checkbox' } }),
+          input(tab[0], { attrs: Object.assign({}, { type: 'checkbox' }, (tab[2]) ? { checked: 'checked'} : {}) }),
           span('.checkmark')
         ])
       )

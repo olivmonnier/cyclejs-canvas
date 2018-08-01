@@ -80,7 +80,7 @@ function Preview(sources) {
           style: !props.visible ? 'display: none;' : ''
         }
       }, [
-        span('.label', 'Preview: '),
+        span('.label', 'Preview'),
         iframe({
           attrs: {
             srcdoc: html,

@@ -16,7 +16,7 @@ function Console(sources) {
           style: !props.visible ? 'display: none;' : ''
         }
       }, [
-          span('.label', 'Console: '),
+          span('.label', 'Console'),
           div([
             button('.clear', 'Clear'),
             div(logs.map(log => div(`${log.type ? log.type.toUpperCase() + ': ' : ''}${log.message}`)))
