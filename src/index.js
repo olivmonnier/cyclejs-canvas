@@ -14,9 +14,6 @@ import NavTabs from './components/navTabs';
 import NavContent from './components/navContent';
 import makeLogDriver from './drivers/log';
 
-import * as OfflinePluginRuntime from 'offline-plugin/runtime';
-OfflinePluginRuntime.install();
-
 function main(sources) {
   const navTabs = NavTabs({ DOM: sources.DOM });
   const navContent = NavContent({ DOM: sources.DOM, tabs: navTabs.state, LOG: sources.LOG });
