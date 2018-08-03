@@ -1,4 +1,12 @@
 import './styles.scss';
+import '../node_modules/codemirror/lib/codemirror.css';
+import CodeMirror from 'codemirror/lib/codemirror';
+import 'codemirror/mode/xml/xml';
+import 'codemirror/mode/css/css';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/htmlmixed/htmlmixed';
+window.CodeMirror = CodeMirror;
+
 import xs from "xstream";
 import { run } from "@cycle/run";
 import { div, makeDOMDriver } from "@cycle/dom";
