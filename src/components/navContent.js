@@ -18,7 +18,7 @@ function NavContent(sources) {
   const htmlInputProps = sources.tabs.map(({ html }) => ({ label: 'HTML', visible: html, mode: 'htmlmixed' }));
   const htmlInput = TextInput({ DOM: sources.DOM, props: htmlInputProps });
 
-  const jsInputProps = sources.tabs.map(({ js }) => ({ label: 'JS', visible: js, mode: 'javascript' }));
+  const jsInputProps = sources.tabs.map(({ js }) => ({ label: 'ES6', visible: js, mode: 'javascript' }));
   const jsInput = JsInput({ DOM: sources.DOM, props: jsInputProps });
 
   const cssInputProps = sources.tabs.map(({ css }) => ({ label: 'CSS', visible: css, mode: 'css' }));
