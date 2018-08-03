@@ -17,7 +17,6 @@
     "@cycle/run": "4.4.0",
     "codemirror": "^5.39.2",
     "express": "^4.16.3",
-    "offline-plugin": "^5.0.5",
     "xstream": "11.7.0"
   },
   "devDependencies": {
