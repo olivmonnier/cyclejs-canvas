@@ -5,11 +5,22 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Sandbox</title>
-	<link rel="manifest" href="manifest.webmanifest">
+	<link rel="manifest" href="/manifest.webmanifest">
 <link href="style.959e1472bebf1e206bd6.css" rel="stylesheet"></head>
 
 <body>
 	<div id="app"></div>
+	<script>
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', () => {
+				navigator.serviceWorker.register('/sw.js').then(registration => {
+					console.log('SW registered: ', registration);
+				}).catch(registrationError => {
+					console.log('SW registration failed: ', registrationError);
+				});
+			});
+		}
+	</script>
 <script type="text/javascript" src="main.7d79b247d22726e21eea.js"></script></body>
 
 </html>
