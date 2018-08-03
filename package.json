@@ -4,9 +4,6 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "predev": "rimraf ./dist",
-    "dev": "webpack --config webpack.config.js",
-    "prebuild": "rimraf ./dist",
     "build": "webpack --config webpack.config.js",
     "start": "node index"
   },

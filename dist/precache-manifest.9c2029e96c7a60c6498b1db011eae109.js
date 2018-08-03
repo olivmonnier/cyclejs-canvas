@@ -1,7 +1,7 @@
 self.__precacheManifest = [
   {
-    "revision": "6b145dcf3993980c5ae0a8a029b910b1",
-    "url": "images/icons/icon-152x152.png"
+    "revision": "efe5adc1f2f80b170991717172540cc8",
+    "url": "images/icons/icon-192x192.png"
   },
   {
     "revision": "7d79b247d22726e21eea",
@@ -15,7 +15,7 @@ self.__precacheManifest = [
     "url": "main.7d79b247d22726e21eea.js"
   },
   {
-    "revision": "4a06a3c164799b2ed42cdc6464378f4b",
+    "revision": "ff338cde7f45c51c7556dfdd0d77a7ca",
     "url": "index.html"
   },
   {
@@ -35,8 +35,8 @@ self.__precacheManifest = [
     "url": "images/icons/icon-384x384.png"
   },
   {
-    "revision": "efe5adc1f2f80b170991717172540cc8",
-    "url": "images/icons/icon-192x192.png"
+    "revision": "6b145dcf3993980c5ae0a8a029b910b1",
+    "url": "images/icons/icon-152x152.png"
   },
   {
     "revision": "e1ce8ef343599dc0651d8feaea2588ae",
